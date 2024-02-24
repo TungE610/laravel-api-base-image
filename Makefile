@@ -10,3 +10,13 @@ help: ## Print help.
 
 ps: ## Show containers.
 	@docker compose ps
+auth: ## authenticate with AWS
+	aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 719290825745.dkr.ecr.us-east-1.amazonaws.com 
+build-push:
+	make build
+	make push
+build: ## build out prod
+	docker build -t prod-gocut-api-base-image .
+push: ## push to prod image
+	docker tag prod-gocut-api-base-image:latest 719290825745.dkr.ecr.us-east-1.amazonaws.com/prod-gocut-api-base-image:latest
+	docker push 719290825745.dkr.ecr.us-east-1.amazonaws.com/prod-gocut-api-base-image:latest
